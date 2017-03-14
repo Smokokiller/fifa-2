@@ -1,0 +1,30 @@
+= simple_form_for @tournament, html:{multipart: true } do |f|
+	- if @tournament.errors.any?
+		#errors
+			%h2
+			= pluralize(@tournament.errors.count, "error")
+			prevented this tournament from saving
+			%ul
+				- @tournament.errors.full_messages.each do |msg|
+					%li= msg
+
+	.form-group
+		= f.input :image, input_html: { class: 'form-control' }
+	.form-group
+		= f.input :title, input_html: { class: 'form-control' }
+	.form-group
+		= f.input :description, input_html: { class: 'form-control' }
+
+	.box
+		.row
+			.col-md-6
+				%h3 Poules
+				#poules
+					= f.simple_fields_for :poules do |poule|
+						= render 'poule_fields', f: poule
+					.links
+						= link_to_add_association 'Add Poule', f, :poules
+
+	.btn-group.pull-right
+		= f.button :submit, class: "btn btn-pray"
+		
